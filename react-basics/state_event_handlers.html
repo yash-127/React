@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>React Basics</title>
+    <style>
+      button {
+        background-color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script  src="https://unpkg.com/supersimpledev/chatbot.js" ></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+
+        function ChatInput({chatMessages , setChatMessages}) { 
+         const [inputText, setInputText] = React.useState('');
+          function saveInputText(event) {
+            setInputText(event.target.value);
+          }
+          function SendMessage(){
+
+            const newChatMessages = [
+                
+                  // ... is a spread operatot that creates a copy of an array and we use copies in react to change the real value cause its efficient 
+
+                    ...chatMessages,
+                    {
+                      message: inputText,
+                      sender: 'user',
+                      id: crypto.randomUUID()
+                    }
+                  ]
+
+              setChatMessages(newChatMessages);  
+
+                  const response =  Chatbot.getResponse(inputText);
+
+                   setChatMessages([
+                    ...newChatMessages,     // didnt use the og one chatMessages because it aint returning the full changed value so now first we stored the value in a varuable then used its copy to change
+
+                    {
+                      message: response,
+                      sender: 'robot',
+                      id: crypto.randomUUID()
+                    }
+                  ]);  
+                  setInputText('');
+
+          }
+            return (
+                <>
+                    <input
+                     placeholder="Enter your query"
+                     size="30"
+                     onChange={saveInputText}
+                     value={inputText}
+                     />
+                    <button onClick={SendMessage} >Send</button>
+                </>
+            );
+        }
+
+       // function ChatMessage(props) {
+        function ChatMessage({ message , sender }) {
+           // const message = props.message;
+          //  const sender = props.sender;
+
+
+          //  const { message , sender } = props;
+
+
+            return (
+                <div>
+                    {sender === 'robot' && <img src="robot.jpg" alt="" width="40" /> }
+                    {message}
+                    {sender != 'robot' && <img src="me.jpg" alt="" width="40"/> }
+                </div>
+            );
+        }
+
+
+
+
+      /*
+              const app = (
+        <>
+            <ChatInput />
+            <ChatMessage
+              message="Hello bro"
+             />
+            <ChatMessage
+              message="Hello"
+              sender="robot"
+              />
+            <ChatMessage message="ooyyy"/>
+            <ChatMessage message="hnji" sender="robot"/>
+        </>
+      );
+
+      */
+      function ChatMessages({chatMessages}){
+        // state is connected to html so instant update is what we get 
+        // const [chatMessages, setChatMessages] = react.useState(); easy way 
+
+        
+    /* removed from here cause we wanted to access this state in input too and to do that we are using lifting the state up and in this we'll paste this code inside the app components cause app has input and chatmessages both 
+
+            const array = React.useState( [{
+                message: 'hello chatbot',
+                sender: 'user',
+                id: 'id1'
+            }, 
+            {
+                message: 'hello',
+                sender: 'robot',
+                id: 'id2'
+            },
+            {
+                message: 'Oy',
+                sender: 'user',
+                id: 'id3'
+            },
+            {
+                message: 'Ji boliye',
+                sender: 'robot',
+                id: 'id4'
+            }
+        ]);
+        const chatMessages = array[0];  // current data
+        const setChatMessages = array[1] // function that updates the data
+
+*/
+
+
+
+
+          
+/*
+        function sendMessage(){
+          /*
+          //this will not update the html
+                      chatMessages.push({
+                        message: 'test',
+                        sender: 'user',
+                        id: crypto.randomUUID()
+                      });
+                      console.log(chatMessages);
+           */
+          // const setChatMessages contains a function thats why we're using it like a function
+          
+          
+/*
+          setChatMessages([
+          // ... is a spread operator that creates a copy of an array and we use copies in react to change the real value cause its efficient 
+
+            ...chatMessages,
+            {
+              message: 'test',
+              sender: 'user',
+              id: crypto.randomUUID()
+            }
+          ]);
+
+
+
+
+        }
+        */
+
+         return (
+          // onclick = event , sendMessage = eventhandler , camelCase scenario
+           // for practice inside <> for sendMessage function above <button onClick={sendMessage}>send message</button> 
+          <>
+         
+                {
+                    chatMessages.map((chatMessage) => {
+                      return(
+                        // chatmessage is inside the chatmessages function 
+                          <ChatMessage
+                              message = {chatMessage.message}
+                              sender = {chatMessage.sender}
+                              key= {chatMessage.id}
+                          />
+                      );
+
+                })}
+        </>
+        );
+        
+      }
+
+
+
+      function App(){
+        
+            const array = React.useState( [{
+                message: 'hello chatbot',
+                sender: 'user',
+                id: 'id1'
+            }, 
+            {
+                message: 'hello',
+                sender: 'robot',
+                id: 'id2'
+            },
+            {
+                message: 'Oy',
+                sender: 'user',
+                id: 'id3'
+            },
+            {
+                message: 'Ji boliye',
+                sender: 'robot',
+                id: 'id4'
+            }
+        ]);
+        const chatMessages = array[0];  // current data
+        const setChatMessages = array[1] // function that updates the data
+        return (
+          <>
+              <ChatInput 
+                chatMessages={chatMessages}
+                setChatMessages={setChatMessages}
+              />
+              <ChatMessages 
+                chatMessages={chatMessages}
+              />
+             
+
+        </>
+        );
+      }
+      
+
+
+      const container = document.querySelector('.js-container');
+      ReactDOM.createRoot(container).render(<App />);
+    </script>
+  </body>
+</html>

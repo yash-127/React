@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>React Basics</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+    
+    function InputName({CurrentMessage, ChangedMsg}){
+         const [inputText, setInputText] = React.useState('');
+        function saveInputText(event){
+            setInputText(event.target.value);
+         }
+         
+        function changeButtonName(){
+            const buttonName = inputText;
+            ChangedMsg(buttonName);
+
+        }
+                    return (
+                <>
+                    <input
+                     placeholder="Enter your query"
+                     size="30"
+                     onChange={saveInputText}
+                     />
+                    <button onClick={changeButtonName}>Send</button>
+                </>
+            );
+    }
+    function Hello({CurrentMessage}){
+        return (
+            <>
+                <button>{CurrentMessage}</button>
+            </>
+        )
+    }
+    
+
+    function App(){
+        const [CurrentMessage, ChangedMsg] = React.useState('Hello');
+        return (
+            <>
+                <InputName CurrentMessage={CurrentMessage} ChangedMsg={ChangedMsg}/>
+                <Hello CurrentMessage={CurrentMessage} />
+            </>
+        );
+    }
+      
+      const container = document.querySelector('.js-container');
+      ReactDOM.createRoot(container).render(<App />);
+    </script>
+  </body>
+</html>
