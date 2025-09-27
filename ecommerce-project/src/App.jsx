@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router'
 import { HomePage } from './Pages/HomePage'
+import { Orders } from './Pages/orders'
 import './App.css'
 import { CheckoutPage } from './Pages/CheckoutPage'
 // Routes component tells react all the pages that are in out website
@@ -15,6 +16,7 @@ function App() {
     <Routes> 
       <Route index element={<HomePage />}></Route>  
       <Route path="checkout" element={<CheckoutPage />} ></Route>
+      <Route path="orders" element={<Orders />} ></Route>
     </Routes>
     </>
   )
