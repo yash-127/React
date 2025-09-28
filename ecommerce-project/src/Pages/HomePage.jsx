@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { Header } from '../components/header';
 import { products } from '../../starting-code/data/products';
 import './HomePage.css'
@@ -6,12 +7,11 @@ import './HomePage.css'
 // for data fetching map is getting used its really cool
 // {`images/ratings/rating-${product.rating.stars * 10}.png`} if src is not whole provided in the array and only has details than we can use
 // template strings `` and use ${} to change the insides
+// axios is a cleaner way to get response from the backend less code requires and data get direcltly stored inside the response
 export function HomePage() {
-    fetch('http://localhost:3000/api/products')
+    axios.get('http://localhost:3000/api/products')
      .then((response) => {
-       return response.json()
-    }).then((data) => {
-        console.log(data);
+       console.log(response.data);
     });
     return (
         <>
