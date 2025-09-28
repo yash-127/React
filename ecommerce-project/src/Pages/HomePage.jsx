@@ -1,18 +1,31 @@
 import axios from 'axios'
+import { useEffect, useState } from 'react';
 import { Header } from '../components/header';
-import { products } from '../../starting-code/data/products';
 import './HomePage.css'
+
+// import { products } from '../../starting-code/data/products'; after using useState set function we dont need this array cause we're using server for that
+
 // .toFixed(2) used to display decimal up to 2 digits 
 // product.map(product) => {} takes the product array and have the ability to change it with a function or to use it inside some html 
 // for data fetching map is getting used its really cool
 // {`images/ratings/rating-${product.rating.stars * 10}.png`} if src is not whole provided in the array and only has details than we can use
 // template strings `` and use ${} to change the insides
 // axios is a cleaner way to get response from the backend less code requires and data get direcltly stored inside the response
+// in the console we see two set of data that's because of strictMode runs twice to check for bugs
+// useEffect let us control when some code runs 
+// we used a dependency array that is used to control when useEffect run and leaved emty it will run once
+
 export function HomePage() {
-    axios.get('http://localhost:3000/api/products')
-     .then((response) => {
-       console.log(response.data);
-    });
+
+    const [products, setProducts] = useState([]);
+
+    useEffect(()=>{
+         axios.get('http://localhost:3000/api/products')
+            .then((response) => {
+                 setProducts(response.data);
+            });
+    }, []);
+   
     return (
         <>
 
