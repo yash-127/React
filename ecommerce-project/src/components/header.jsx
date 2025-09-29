@@ -1,5 +1,6 @@
 import { Link } from 'react-router';  // let us go to another page without reloading
 // Also in the tutorial he used the header componenet in both the homepage and the orders page but I used it directly in app.jsx 
+// The orders page dont work in server proxy git point is because now cart takes a pron or argument and orders page header dont provide it 
 import './header.css'
 export function Header({ cart }){
     let totalQuantity = 0;
@@ -28,7 +29,6 @@ export function Header({ cart }){
 
             <div className="right-section">
                 <Link className="orders-link header-link" to="/orders">
-
                 <span className="orders-text">Orders</span>
                 </Link>
 

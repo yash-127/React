@@ -14,7 +14,7 @@ import './HomePage.css'
 // in the console we see two set of data that's because of strictMode runs twice to check for bugs
 // useEffect let us control when some code runs 
 // we used a dependency array that is used to control when useEffect run and leaved emty it will run once
-
+// removed the localhose:3000 from axios and put it into vit.config.js for easy environment 
 export function HomePage() {
 
     const [products, setProducts] = useState([]);
@@ -22,12 +22,12 @@ export function HomePage() {
 
 
     useEffect(()=>{
-         axios.get('http://localhost:3000/api/products')
+         axios.get('/api/products')
             .then((response) => {
                  setProducts(response.data);
             });
 
-         axios.get('http://localhost:3000/api/cart-items')
+         axios.get('/api/cart-items')
             .then((response) => {
                 console.log(response.data);
                  setCart(response.data);
