@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router'
 import axios from 'axios'
 import { useEffect, useState } from 'react';
-import { HomePage } from './Pages/HomePage'
+import { HomePage } from './Pages/Home/HomePage'
 import { Orders } from './Pages/orders'
 import './App.css'
 import { CheckoutPage } from './Pages/CheckoutPage'
@@ -15,19 +15,20 @@ import { CheckoutPage } from './Pages/CheckoutPage'
 // 
 function App() {
  const [cart, setCart] = useState([]);
-    useEffect(() => {
-      const fetchAppData = async () => {
+
+       const loadCart = async () => {
        const response = await axios.get('/api/cart-items?expand=product');
        setCart(response.data);
-      }
-      fetchAppData();
+      };
+    useEffect(() => {
+        loadCart();
     },[]);
 
           
   return (
     <>
     <Routes> 
-      <Route index element={<HomePage cart={cart} />}></Route>  
+      <Route index element={<HomePage cart={cart} loadCart={loadCart} />}></Route>  
       <Route path="checkout" element={<CheckoutPage cart={cart} />} ></Route>
       <Route path="orders" element={<Orders cart={cart} />} ></Route>
     </Routes>
