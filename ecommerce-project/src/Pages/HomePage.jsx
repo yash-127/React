@@ -15,11 +15,10 @@ import './HomePage.css'
 // useEffect let us control when some code runs 
 // we used a dependency array that is used to control when useEffect run and leaved emty it will run once
 // removed the localhose:3000 from axios and put it into vit.config.js for easy environment 
-export function HomePage() {
+export function HomePage({cart}) {
 
     const [products, setProducts] = useState([]);
-    const [cart, setCart] = useState([]);
-
+   
 
     useEffect(()=>{
          axios.get('/api/products')
@@ -27,11 +26,7 @@ export function HomePage() {
                  setProducts(response.data);
             });
 
-         axios.get('/api/cart-items')
-            .then((response) => {
-                console.log(response.data);
-                 setCart(response.data);
-            });
+
     }, []);
    
     return (
