@@ -12,13 +12,15 @@ import { CheckoutPage } from './Pages/CheckoutPage'
 // we gave path =  / cause path of home page in local hose 5454 is empty 
 // elememt is just the component that is going to get displayed through the route page
 // path = / is the same as writing 'index' = path="/"
+// 
 function App() {
  const [cart, setCart] = useState([]);
     useEffect(() => {
-      axios.get('/api/cart-items?expand=product')
-            .then((response) => {
-                 setCart(response.data);
-            });
+      const fetchAppData = async () => {
+       const response = await axios.get('/api/cart-items?expand=product');
+       setCart(response.data);
+      }
+      fetchAppData();
     },[]);
 
           

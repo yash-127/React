@@ -16,18 +16,30 @@ import './HomePage.css'
 // useEffect let us control when some code runs 
 // we used a dependency array that is used to control when useEffect run and leaved emty it will run once
 // removed the localhose:3000 from axios and put it into vit.config.js for easy environment 
+// async was returning a promise if we just used that and not put it inside a function and we use names like fetchHomeData and all for that
+
 export function HomePage({cart}) {
 
     const [products, setProducts] = useState([]);
    
 
     useEffect(()=>{
+       /* we used async await to make the code line by line and easier to understand recommended 
+
+       Without async await
+
+       ********* async await let us type asynchronous(waiting response) code like normal code
+
          axios.get('/api/products')
             .then((response) => {
                  setProducts(response.data);
             });
-
-
+        */
+       const getHomeData = async () => {
+        const response = await axios.get('/api/products');
+        setProducts(response.data);
+       }
+       getHomeData();
     }, []);
    
     return (
