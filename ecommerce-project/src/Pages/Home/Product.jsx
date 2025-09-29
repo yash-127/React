@@ -5,9 +5,10 @@ import { formatMoney } from "../../utils/money";
 export function Product({product, loadCart}) {
 
     const addToCart = async () => {
+        // axios.get(), post, put, delete these are one of the type of request and axios sends two pieces of information for ex Get and url path -- /api/cart-items {each request has a type and a url}
                 await axios.post('/api/cart-items', {
                     productId: product.id,
-                    quantity: quantity  // also can just use quantity = quantity: quantity
+                    quantity: quantity  // also can just use just quantity = quantity: quantity
                 });
                 await loadCart();
             };

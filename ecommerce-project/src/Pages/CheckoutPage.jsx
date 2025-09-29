@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import './checkout.css'
 import './checkout-header.css'
 import { formatMoney } from '../utils/money';
-export function CheckoutPage({ cart }) {
+export function CheckoutPage({ cart,loadCart }) {
     const [deliveryOptions, setDeliveryOptions] = useState([]);
     const [paymentSummary, setPaymentSummary] = useState(null);
 
@@ -12,12 +12,18 @@ export function CheckoutPage({ cart }) {
         const fetchCheckOutData = async () => {
             let response = await axios.get('/api/delivery-options?expand=estimatedDeliveryTime');
             setDeliveryOptions(response.data);
-
-            response = await axios.get('/api/payment-summary');
-            setPaymentSummary(response.data);
         }
         fetchCheckOutData();
-    }, []);
+    }, []); 
+
+     useEffect(() => {
+        const paymentSummaryUpdate = async () => {
+            let response  = await axios.get('/api/payment-summary');
+            setPaymentSummary(response.data);
+        }
+        paymentSummaryUpdate();
+    }, [cart]); // everytime the cart changes the summary get reloaded 
+
     return (
 
         <>
@@ -92,10 +98,18 @@ export function CheckoutPage({ cart }) {
                                                 if (deliveryOption.priceCents > 0) {
                                                     priceString = `${formatMoney(deliveryOption.priceCents)} - Shipping`
                                                 }
+
+                                                const updateDeliveryOption = async ()=> {
+                                                    await axios.put(`/api/cart-items/${cartItem.productId}`,{
+                                                        deliveryOptionId: deliveryOption.id
+                                                    });
+                                                    await loadCart();
+                                                };
                                                 return (
-                                                    <div key={deliveryOption.id} className="delivery-option">
+                                                    <div key={deliveryOption.id} className="delivery-option" onClick={updateDeliveryOption}>
                                                         <input type="radio"
-                                                            checked={deliveryOption.id === cartItem.deliveryOptionId}
+                                                            checked={deliveryOption.id === cartItem.deliveryOptionId} // console error says if you have a checked prop then you should also have a onChange prop
+                                                            onChange={()=>{}} // this just remove the error ntg else
                                                             className="delivery-option-input"
                                                             name={`delivery-option-${cartItem.productId}`} />
                                                         <div>
