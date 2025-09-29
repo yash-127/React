@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react';
 import { Header } from '../components/header';
+import { formatMoney } from '../utils/money';
 import './HomePage.css'
 
 // import { products } from '../../starting-code/data/products'; after using useState set function we dont need this array cause we're using server for that
@@ -59,7 +60,7 @@ export function HomePage({cart}) {
                                 </div>
 
                                 <div className="product-price">
-                                    ${(product.priceCents / 100).toFixed(2)} 
+                                    {formatMoney(product.priceCents)}
                                 </div>
 
                                 <div className="product-quantity-container">
