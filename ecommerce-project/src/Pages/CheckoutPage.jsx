@@ -24,6 +24,7 @@ export function CheckoutPage({ cart,loadCart }) {
         paymentSummaryUpdate();
     }, [cart]); // everytime the cart changes the summary get reloaded 
 
+
     return (
 
         <>
@@ -54,10 +55,18 @@ export function CheckoutPage({ cart,loadCart }) {
                 <div className="checkout-grid">
                     <div className="order-summary">
                         {deliveryOptions.length > 0 && cart.map((cartItem) => {
+
+                                                    
+                            const deleteItem = async ()=>{
+                                await axios.delete(`/api/cart-items/${cartItem.productId}`)
+                                await loadCart();
+                            };
+
                             const selectedDeliveryOption = deliveryOptions
                                 .find((deliveryOption) => {
                                     return deliveryOption.id === cartItem.deliveryOptionId;
-                                })
+                                });
+
                             return (
                                 <div key={cartItem.productId} className="cart-item-container">
                                     <div className="delivery-date">
@@ -82,7 +91,7 @@ export function CheckoutPage({ cart,loadCart }) {
                                                 <span className="update-quantity-link link-primary">
                                                     Update
                                                 </span>
-                                                <span className="delete-quantity-link link-primary">
+                                                <span className="delete-quantity-link link-primary" onClick={deleteItem}>
                                                     Delete
                                                 </span>
                                             </div>
