@@ -3,11 +3,18 @@ import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import './checkout.css'
 import './checkout-header.css'
+import { useNavigate } from 'react-router';
 import { formatMoney } from '../utils/money';
 export function CheckoutPage({ cart,loadCart }) {
     const [deliveryOptions, setDeliveryOptions] = useState([]);
     const [paymentSummary, setPaymentSummary] = useState(null);
 
+    const navigate = useNavigate();
+    const createOrder = async ()=>{
+       await axios.post('/api/orders');
+       await loadCart();
+       navigate('/orders');
+    };
     useEffect(() => {
         const fetchCheckOutData = async () => {
             let response = await axios.get('/api/delivery-options?expand=estimatedDeliveryTime');
@@ -172,7 +179,7 @@ export function CheckoutPage({ cart,loadCart }) {
                                     <div className="payment-summary-money">{formatMoney(paymentSummary.totalCostCents)}</div>
                                 </div>
 
-                                <button className="place-order-button button-primary">
+                                <button className="place-order-button button-primary" onClick={createOrder}>
                                     Place your order
                                 </button>
                             </>
